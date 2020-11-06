@@ -15,5 +15,5 @@ interface NodeRepositoryInterface
 	* @return Collection
 	*/
      public function all(): Collection;
-
+public function addNodesToGraph($nodes,$id);
 }

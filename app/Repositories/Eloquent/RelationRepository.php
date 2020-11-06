@@ -4,6 +4,7 @@
 namespace App\Repositories\Eloquent;
 use App\Models\Relation;
 use App\Repositories\RelationRepositoryInterface;
+use App\Repositories\NodeRepositoryInterface;
 use Illuminate\Support\Collection;
 class RelationRepository extends BaseRepository implements RelationRepositoryInterface
 {
@@ -12,9 +13,12 @@ class RelationRepository extends BaseRepository implements RelationRepositoryInt
  *
  * @param User $model
  */
- public function __construct(Relation $model)
+ private $nodeRepository;
+ public function __construct(Relation $model,NodeRepositoryInterface $nodeRepository)
  {
- parent::__construct($model);
+		parent::__construct($model);
+		$this->nodeRepository=$nodeRepository;
+ 
  }
  /**
  * @return Collection
@@ -23,5 +27,20 @@ class RelationRepository extends BaseRepository implements RelationRepositoryInt
  {
  return $this->model->all();
  }
-
+public function addRelationsToGraph($relations){
+	 for($i=0;$i<count($relations);$i++){
+				$relationInput=$relations[$i];
+				$relation=Relation::where('parent_id','=',$relationInput['parent_id'])
+								->where('child_id','=',$relationInput['child_id'])->first();
+				if($relation==null){
+					$parent=$this->nodeRepository->find($relationInput['parent_id']);
+					$child=$this->nodeRepository->find($relationInput['child_id']);
+				if($parent!=null && $child!=null){
+					if($parent->graph_id==$child->graph_id){
+						$this->model->create($relationInput);
+					}
+				}
+				}
+ }
+ }
 }

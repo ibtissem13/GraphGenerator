@@ -13,6 +13,7 @@ class GraphController extends BaseController
 {
     
 	 private $graphRepository;
+	 private $relationRepository;
 
 		 public function __construct(GraphRepositoryInterface $graphRepository)
 		 {

@@ -15,5 +15,5 @@ interface RelationRepositoryInterface
 	* @return Collection
 	*/
      public function all(): Collection;
-
+	 public function addRelationsToGraph($relations);
 }

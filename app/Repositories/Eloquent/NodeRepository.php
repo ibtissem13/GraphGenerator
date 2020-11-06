@@ -23,5 +23,18 @@ class NodeRepository extends BaseRepository implements NodeRepositoryInterface
  {
  return $this->model->all();
  }
+ public function addNodesToGraph($nodes,$id){
+	 for($i=0;$i<count($nodes);$i++){
+				$nodeInput=$nodes[$i];
+				$node=$this->model->find($nodeInput['id']);
+				if($node==null){
+				$node=new Node();	
+				$node->id=$nodeInput['id'];
+				$node->graph_id=$id;
+				$node->save();
+				}
+			}
+ }
+ 
 
 }

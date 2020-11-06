@@ -10,6 +10,9 @@ use App\Models\Relation;
 use Illuminate\Database\Eloquent\Model;
 use App\Repositories\GraphRepositoryInterface;
 use App\Repositories\Eloquent\BaseRepository;
+use App\Repositories\RelationRepositoryInterface;
+use App\Repositories\NodeRepositoryInterface;
+
 use Illuminate\Support\Collection;
 use Validator;
 class GraphRepository extends BaseRepository implements GraphRepositoryInterface
@@ -19,9 +22,13 @@ class GraphRepository extends BaseRepository implements GraphRepositoryInterface
  *
  * @param User $model
  */
- public function __construct(Graph $model)
+ private $relationRepository;
+ private $nodeRepository;
+ public function __construct(Graph $model,RelationRepositoryInterface $relationRepository,NodeRepositoryInterface $nodeRepository)
  {
  parent::__construct($model);
+ $this->relationRepository=$relationRepository;
+ $this->nodeRepository=$nodeRepository;
  }
  /**
  * @return Collection
@@ -77,43 +84,14 @@ class GraphRepository extends BaseRepository implements GraphRepositoryInterface
 		 }
 		
  }
- public function addNodesToGraph($nodes,$id){
-	 for($i=0;$i<count($nodes);$i++){
-				$nodeInput=$nodes[$i];
-				$node=Node::find($nodeInput['id']);
-				if($node==null){
-				$node=new Node();	
-				$node->id=$nodeInput['id'];
-				$node->graph_id=$id;
-				$node->save();
-				}
-			}
- }
- public function addRelationsToGraph($relations){
-	 for($i=0;$i<count($relations);$i++){
-				$relationInput=$relations[$i];
-				$relation=Relation::where('parent_id','=',$relationInput['parent_id'])
-								->where('child_id','=',$relationInput['child_id'])->first();
-				if($relation==null){
-					$parent=Node::find($relationInput['parent_id']);
-					$child=Node::find($relationInput['child_id']);
-				if($parent!=null && $child!=null){
-					if($parent->graph_id==$child->graph_id){
-						$relation=new Relation();	
-						$relation->parent_id=$relationInput['parent_id'];
-						$relation->child_id=$relationInput['child_id'];
-						$relation->save();
-					}
-				}
-				}
- }
- }
+ 
+ 
  public function reshape($id,$nodes,$relations) : int {
 	
 		 $graph=$this->model->find($id);
 		 if($graph!=null){
-			$this->addNodesToGraph($nodes,$id);
-			$this->addRelationsToGraph($relations);
+			$this->nodeRepository->addNodesToGraph($nodes,$id);
+			$this->relationRepository->addRelationsToGraph($relations);
 				
 			
 			return 1;
