@@ -33,8 +33,9 @@ class RelationRepository extends BaseRepository implements RelationRepositoryInt
  {
 			$parent=$this->nodeRepository->find($attributes['parent_id']);
 			$child=$this->nodeRepository->find($attributes['child_id']);
+			$graph_id=$attributes['graph_id'];
 			if($parent!=null && $child!=null){
-					if($parent->graph_id==$child->graph_id){
+					if($parent->graph_id==$attributes['graph_id'] && $child->graph_id==$attributes['graph_id']){
 					
 						return $this->model->create($attributes);
 					}

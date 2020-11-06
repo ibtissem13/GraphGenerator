@@ -16,7 +16,7 @@ class RelationController extends BaseController
   
     /**
      * Add relation to a specific graph
-     * @param  \Illuminate\Http\Request  $request : contains the relation nodes ids 
+     * @param  \Illuminate\Http\Request  $request : contains the relation the graph_id, parent_id and child_id 
      * @return \Illuminate\Http\Response : success true or false and a message
      */
     public function store(Request $request)
@@ -41,7 +41,7 @@ class RelationController extends BaseController
         $relation = $this->relationRepository->create($input);
 
 		if($relation==null){
-			return $this->sendError('Validation Error.', 'Parent node and child node doesn\'t belong to the same graph');       
+			return $this->sendError('Validation Error.', 'Parent node and/or child node doesn\'t/don\'t belong to this graph');       
 
 		}
         return $this->sendResponse($relation, 'Relation created successfully.');

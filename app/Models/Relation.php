@@ -21,6 +21,7 @@ class Relation extends Model
         'parent_id', 'child_id'
     ];
 	protected  $createRules = [
+	'graph_id'=> 'required|exists:graphs,id',
     'parent_id' => 'required|exists:nodes,id',
     'child_id' => 'required|exists:nodes,id',
     
