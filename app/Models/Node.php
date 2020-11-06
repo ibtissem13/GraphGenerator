@@ -20,11 +20,17 @@ class Node extends Model
 	  protected $fillable = [
          'graph_id'
     ];
+	protected  $createRules = [
+    'graph_id' => 'required|exists:graphs,id',
+    
+];
     public function graph()
 { 
     return $this->belongsTo('App\Models\Graph'); 
 }
-	
+	public function getCreateRulesAttribute(){
+		return $this->createRules;
+	}
 	public function children(){
 	return $this->hasMany('App\Models\Relation','parent_id','id');
 	}

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 use App\Repositories\RelationRepositoryInterface;
-
+use Validator;
 use Illuminate\Http\Request;
 
 class RelationController extends BaseController
@@ -25,13 +25,26 @@ class RelationController extends BaseController
 		$input = $request->all();
 
 
+       $rules = $this->relationRepository->getCreationValidationRules();
+
+		$validator = Validator::make($input, $rules);
+
+
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
        
 
 
-        $node = $this->relationRepository->create($input);
 
+        $relation = $this->relationRepository->create($input);
 
-        return $this->sendResponse([], 'Relation created successfully.');
+		if($relation==null){
+			return $this->sendError('Validation Error.', 'Parent node and child node doesn\'t belong to the same graph');       
+
+		}
+        return $this->sendResponse($relation, 'Relation created successfully.');
     
     }
 

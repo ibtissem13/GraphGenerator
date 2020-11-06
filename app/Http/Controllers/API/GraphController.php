@@ -92,7 +92,7 @@ class GraphController extends BaseController
     {
         //
 		 $input = $request->all();
-		 $rules = $this->graphRepository->getCreationValidationRules();
+		 $rules = $this->graphRepository->getUpdateValidationRules($id);
 
 		 $validator = Validator::make($input, $rules);
 

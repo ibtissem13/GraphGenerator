@@ -6,6 +6,8 @@ use App\Models\Relation;
 use App\Repositories\RelationRepositoryInterface;
 use App\Repositories\NodeRepositoryInterface;
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+
 class RelationRepository extends BaseRepository implements RelationRepositoryInterface
 {
  /**
@@ -26,6 +28,19 @@ class RelationRepository extends BaseRepository implements RelationRepositoryInt
  public function all(): Collection
  {
  return $this->model->all();
+ }
+ public function create(array $attributes):? Model
+ {
+			$parent=$this->nodeRepository->find($attributes['parent_id']);
+			$child=$this->nodeRepository->find($attributes['child_id']);
+			if($parent!=null && $child!=null){
+					if($parent->graph_id==$child->graph_id){
+					
+						return $this->model->create($attributes);
+					}
+			}
+	return null;
+
  }
 public function addRelationsToGraph($relations){
 	 for($i=0;$i<count($relations);$i++){

@@ -33,6 +33,4 @@ interface GraphRepositoryInterface
 	public function numberOfNodes($id): int;
 	public function numberOfRelations($id):int;
 	public function getInfos($id):?Model; 
-	public function getCreationValidationRules():array;
-	public function getUpdateValidationRules():array;
 }

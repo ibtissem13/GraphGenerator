@@ -17,7 +17,7 @@ class CreateGraphsTable extends Migration
 			$table->engine = 'InnoDB';
             $table->id();
 			$table->string('name')->unique();
-			$table->text('description');
+			$table->text('description')->default('');
             $table->timestamps();
         });
     }

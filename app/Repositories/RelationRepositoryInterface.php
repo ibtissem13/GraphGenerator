@@ -16,4 +16,5 @@ interface RelationRepositoryInterface
 	*/
      public function all(): Collection;
 	 public function addRelationsToGraph($relations);
+	 public function create(array $attributes): ?Model;
 }

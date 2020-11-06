@@ -20,6 +20,11 @@ class Relation extends Model
 	  protected $fillable = [
         'parent_id', 'child_id'
     ];
+	protected  $createRules = [
+    'parent_id' => 'required|exists:nodes,id',
+    'child_id' => 'required|exists:nodes,id',
+    
+];
 	  public function child()
 { 
     return $this->belongsTo('App\Models\Node','child_id','id'); 
@@ -27,4 +32,7 @@ class Relation extends Model
 { 
     return $this->belongsTo('App\Models\Node','parent_id','id'); 
 }
+public function getCreateRulesAttribute(){
+		return $this->createRules;
+	}
 }

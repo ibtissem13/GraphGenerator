@@ -26,9 +26,9 @@ class GraphRepository extends BaseRepository implements GraphRepositoryInterface
  private $nodeRepository;
  public function __construct(Graph $model,RelationRepositoryInterface $relationRepository,NodeRepositoryInterface $nodeRepository)
  {
- parent::__construct($model);
- $this->relationRepository=$relationRepository;
- $this->nodeRepository=$nodeRepository;
+	 parent::__construct($model);
+	 $this->relationRepository=$relationRepository;
+	 $this->nodeRepository=$nodeRepository;
  }
  /**
  * @return Collection
@@ -57,19 +57,8 @@ class GraphRepository extends BaseRepository implements GraphRepositoryInterface
  public function getInfos($id):?Model{
 	 return $this->model->where('id','=',$id)->first(['name', 'description']);;
  }
- public function getCreationValidationRules():array{
-	 
-	 
 
-
-        return $this->model->getCreateRulesAttributes();
- }public function getUpdateValidationRules():array{
-	 
-	 
-
-
-        return $this->model->getUpdateRulesAttributes();
- }
+ 
  public function update($id, $input) : int {
 	 
 		 $graph=$this->model->find($id);

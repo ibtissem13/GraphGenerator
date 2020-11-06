@@ -23,7 +23,7 @@ public function __construct(Model $model)
  *
  * @return Model
  */
- public function create(array $attributes): Model
+ public function create(array $attributes): ?Model
  {
  return $this->model->create($attributes);
  }
@@ -45,6 +45,14 @@ public function __construct(Model $model)
 		return -1;
 	}
   }
+  public function getCreationValidationRules():array{
+
+        return $this->model->createRules;
+ }
+ public function getUpdateValidationRules($id):array{
+		
+        return $this->model->getUpdateRules($id);
+ }
  
 } 
 

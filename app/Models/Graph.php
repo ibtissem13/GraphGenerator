@@ -10,7 +10,7 @@ class Graph extends Model
     use HasFactory;
 	 protected $table = 'graphs';
     protected $primaryKey= 'id';
-
+	
     public $timestamps = true;
     /**
      * The attributes that are mass assignable.
@@ -24,9 +24,7 @@ class Graph extends Model
     'name' => 'required|unique:graphs',
     
 ];
-protected $updateRules = [
-        'name' => 'required|unique:graphs,id'
-    ];
+ 
 	public function nodes()
     {
         return $this->hasMany('App\Models\Node');
@@ -39,11 +37,14 @@ protected $updateRules = [
             'id' 
         );
     }
-	public function getCreateRulesAttributes(){
+	public function getCreateRulesAttribute(){
 		return $this->createRules;
 	}
-	public function getUpdateRulesAttributes(){
-		return $this->updateRules;
+	public function getUpdateRules($id){
+		$updateRules = [
+		'name' =>['required','unique:graphs,name,'.$id],
+    ];
+		return $updateRules;
 	}
 	
 	

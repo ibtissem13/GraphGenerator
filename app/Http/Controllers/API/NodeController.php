@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 use App\Repositories\NodeRepositoryInterface;
 use Illuminate\Http\Request;
-
+use Validator;
 class NodeController extends BaseController
 {
 	 private $nodeRepository;
@@ -34,7 +34,16 @@ class NodeController extends BaseController
     {
         //
 		$input = $request->all();
+		$rules = $this->nodeRepository->getCreationValidationRules();
 
+		$validator = Validator::make($input, $rules);
+
+
+
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+       
 
        
 
